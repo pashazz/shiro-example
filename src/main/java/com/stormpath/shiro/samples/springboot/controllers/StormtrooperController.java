@@ -2,6 +2,7 @@ package com.stormpath.shiro.samples.springboot.controllers;
 
 import com.stormpath.shiro.samples.springboot.common.dao.StormtrooperDao;
 import com.stormpath.shiro.samples.springboot.common.model.Stormtrooper;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -54,9 +55,9 @@ public class StormtrooperController {
     }
 
     @PostMapping(path = "/{id}")
-    @RequiresPermissions("troopers:update")
     public Stormtrooper updateTrooper(@PathVariable("id") String id, @RequestBody Stormtrooper updatedTrooper) throws NotFoundException {
-
+        // Instance-based annotations are not supported, so we use direct check instead:
+        SecurityUtils.getSubject().checkPermission(String.format("troopers:update:%s", id));
         return trooperDao.updateStormtrooper(id, updatedTrooper);
     }
 

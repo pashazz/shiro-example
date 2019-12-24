@@ -86,9 +86,10 @@ public final class DefaultStormtrooperDao implements StormtrooperDao {
         return new Stormtrooper(id, planet, species, type);
     }
 
+    private static int id = 0;
     private static String generateRandomId() {
         // HIGH chance of collisions, but, this is all for fun...
-        return "FN-"  + String.format("%04d", RANDOM.nextInt(9999));
+        return String.format("%d", id++);
     }
 
     private static Stormtrooper randomTrooper() {
